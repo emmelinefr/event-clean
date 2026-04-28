@@ -1,5 +1,7 @@
 package dev.alexandraemmeline.EventClean.core.entities;
 import dev.alexandraemmeline.EventClean.core.enums.TipoEvento;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +13,8 @@ public record Evento(
         String identificador,
         LocalDateTime dataInicio,
         LocalDateTime dataFim,
-        LocalDateTime local,
+        LocalDateTime localEvento,
+        Integer capacidade,
         String organizador,
         TipoEvento tipo
 
