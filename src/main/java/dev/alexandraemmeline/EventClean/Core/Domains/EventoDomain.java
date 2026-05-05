@@ -2,23 +2,23 @@ package dev.alexandraemmeline.EventClean.Core.Domains;
 
 import dev.alexandraemmeline.EventClean.Core.Enums.TipoEvento;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class EventoDomain {
 
-    private Integer id;
+    private Long id;
     private String nome;
     private String descricao;
     private String identificador;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
-    private String local;
+    private String localEvento;
     private String organizador;
+    private Integer capacidade;
     private TipoEvento tipo;
 
 
-    public EventoDomain(Integer id, String nome, String descricao, String identificador, LocalDateTime dataInicio, LocalDateTime dataFim, String local, String organizador, TipoEvento tipo) {
+    public EventoDomain(Long id, String nome, String descricao, String identificador, Integer capacidade, LocalDateTime dataInicio, LocalDateTime dataFim, String localEvento, String organizador, TipoEvento tipo) {
         //TODO tratar com exception
         if (dataInicio == null || dataFim == null || dataFim.isBefore(dataInicio)) {
             System.out.println("Período Inválido");
@@ -30,13 +30,13 @@ public class EventoDomain {
         this.identificador = identificador;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.local = local;
+        this.localEvento = localEvento;
         this.organizador = organizador;
         this.tipo = tipo;
     }
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -60,12 +60,16 @@ public class EventoDomain {
         return dataFim;
     }
 
-    public String getLocal() {
-        return local;
+    public String getLocalEvento() {
+        return localEvento;
     }
 
     public String getOrganizador() {
         return organizador;
+    }
+
+    public Integer getCapacidade() {
+        return capacidade;
     }
 
     public TipoEvento getTipo() {
@@ -89,7 +93,7 @@ public class EventoDomain {
         this.dataFim = dataFim;
     }
 
-    public void setLocal(String local) {
-        this.local = local;
+    public void setLocalEvento(String localEvento) {
+        this.localEvento = localEvento;
     }
 }
