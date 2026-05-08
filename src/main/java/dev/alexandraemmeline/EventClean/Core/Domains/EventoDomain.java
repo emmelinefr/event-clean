@@ -18,7 +18,7 @@ public class EventoDomain {
     private TipoEvento tipo;
 
 
-    public EventoDomain(Long id, String nome, String descricao, String identificador, Integer capacidade, LocalDateTime dataInicio, LocalDateTime dataFim, String localEvento, String organizador, TipoEvento tipo) {
+    public EventoDomain(Long id, String nome, String descricao, String identificador, LocalDateTime dataInicio, LocalDateTime dataFim, String localEvento, String organizador, Integer capacidade, TipoEvento tipo) {
         //TODO tratar com exception
         if (dataInicio == null || dataFim == null || dataFim.isBefore(dataInicio)) {
             System.out.println("Período Inválido");
@@ -32,6 +32,7 @@ public class EventoDomain {
         this.dataFim = dataFim;
         this.localEvento = localEvento;
         this.organizador = organizador;
+        this.capacidade = capacidade;
         this.tipo = tipo;
     }
 
@@ -96,4 +97,5 @@ public class EventoDomain {
     public void setLocalEvento(String localEvento) {
         this.localEvento = localEvento;
     }
+
 }
