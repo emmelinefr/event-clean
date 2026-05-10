@@ -4,6 +4,6 @@ import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
 
 public interface CriarEventoUseCase {
 
-    public EventoDomain execute(EventoDomain eventoDomain);
+    EventoDomain execute(EventoDomain eventoDomain);
 
 }

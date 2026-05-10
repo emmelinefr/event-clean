@@ -4,6 +4,6 @@ import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
 
 public interface BuscarEventoUseCase {
 
-    public EventoDomain execute(Integer id);
+    EventoDomain execute(Integer id);
 
 }
