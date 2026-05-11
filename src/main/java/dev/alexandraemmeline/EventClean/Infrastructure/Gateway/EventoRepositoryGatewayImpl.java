@@ -19,8 +19,7 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
     @Override
     public EventoDomain criarEvento(EventoDomain eventoDomain) {
 
-        EventoEntity novoEvento = eventoRepository.save(
-                eventoEntityMapper.toEntity(eventoDomain));
+        EventoEntity novoEvento = eventoRepository.save(eventoEntityMapper.toEntity(eventoDomain));
 
         return eventoEntityMapper.toDomain(novoEvento);
 
