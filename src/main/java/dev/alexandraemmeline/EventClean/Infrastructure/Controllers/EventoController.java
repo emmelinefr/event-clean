@@ -7,6 +7,7 @@ import dev.alexandraemmeline.EventClean.Infrastructure.DTOs.EventoDTO;
 import dev.alexandraemmeline.EventClean.Infrastructure.Mappers.EventoDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,26 +17,35 @@ public class EventoController {
 
     private final EventoDTOMapper eventoDTOMapper;
     private final CriarEventoUseCase criarEventoUseCase;
+    private final BuscarEventoUseCase buscarEventoUseCase;
 
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public EventoDTO criar(@RequestBody EventoDTO eventoDTO) {
+    public ResponseEntity<EventoDTO> criar(@RequestBody EventoDTO eventoDTO) {
 
-        EventoDomain novoEvento = criarEventoUseCase.execute(eventoDTOMapper.toDomain(eventoDTO));
+        EventoDomain novoEventoDomain = criarEventoUseCase.execute(eventoDTOMapper.toDomain(eventoDTO));
 
-        return eventoDTOMapper.toDTO(novoEvento);
+        EventoDTO novoEventoDTO = eventoDTOMapper.toDTO(novoEventoDomain);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 
-/*
+
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<EventoDTO> buscar(@PathVariable Integer id) {
+    public ResponseEntity<EventoDTO> buscar(@PathVariable Long id) {
 
-        EventoDTO evento = eventoMapper.toDTO(buscarEventoUseCase.execute(id));
+        EventoDomain eventoDomain = buscarEventoUseCase.execute(id);
 
-        return
+        if (eventoDomain == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        EventoDTO eventoDTO = eventoDTOMapper.toDTO(eventoDomain);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(eventoDTO);
+
     }
-*/
 
 }
