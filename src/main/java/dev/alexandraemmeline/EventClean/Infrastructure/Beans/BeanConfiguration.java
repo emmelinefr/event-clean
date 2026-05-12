@@ -1,6 +1,8 @@
 package dev.alexandraemmeline.EventClean.Infrastructure.Beans;
 
 import dev.alexandraemmeline.EventClean.Core.Gateway.EventoRepositoryGateway;
+import dev.alexandraemmeline.EventClean.Core.UseCases.BuscarEventoUseCase;
+import dev.alexandraemmeline.EventClean.Core.UseCases.BuscarEventoUseCaseImpl;
 import dev.alexandraemmeline.EventClean.Core.UseCases.CriarEventoUseCase;
 import dev.alexandraemmeline.EventClean.Core.UseCases.CriarEventoUseCaseImpl;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,12 @@ public class BeanConfiguration {
     @Bean
     public CriarEventoUseCase criarEventoUseCase(EventoRepositoryGateway eventoRepositoryGateway) {
         return new CriarEventoUseCaseImpl(eventoRepositoryGateway);
+    }
+
+
+    @Bean
+    public BuscarEventoUseCase buscarEventoUseCase(EventoRepositoryGateway eventoRepositoryGateway) {
+        return new BuscarEventoUseCaseImpl(eventoRepositoryGateway);
     }
 
 }
