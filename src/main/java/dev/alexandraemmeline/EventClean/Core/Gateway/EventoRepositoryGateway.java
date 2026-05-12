@@ -6,4 +6,6 @@ public interface EventoRepositoryGateway {
 
      EventoDomain criarEvento(EventoDomain eventoDomain);
 
+     EventoDomain buscarEvento(Long id);
+
 }

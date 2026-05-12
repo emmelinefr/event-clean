@@ -25,4 +25,14 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
 
     }
 
+
+    @Override
+    public EventoDomain buscarEvento(Long id) {
+
+        return eventoRepository.findById(id)
+                .map(eventoEntityMapper::toDomain)
+                .orElse(null);
+    }
+
+
 }
