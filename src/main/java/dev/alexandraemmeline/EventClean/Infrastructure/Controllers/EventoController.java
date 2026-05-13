@@ -12,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("v1/eventos")
@@ -26,44 +29,75 @@ public class EventoController {
 
 
     @PostMapping
-    public ResponseEntity<EventoDTO> criar(@RequestBody EventoDTO eventoDTO) {
+    public ResponseEntity<Map<String, Object>> criar(@RequestBody EventoDTO eventoDTO) {
 
         EventoDomain novoEventoDomain = criarEventoUseCase.execute(eventoDTOMapper.toDomain(eventoDTO));
 
         EventoDTO novoEventoDTO = eventoDTOMapper.toDTO(novoEventoDomain);
 
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("success", true);
+        response.put("message", "Evento cadastrado com sucesso!");
+        response.put("data", novoEventoDTO);
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .build();
+                .body(response);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<EventoDTO> buscar(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> buscar(@PathVariable Long id) {
 
         EventoDomain eventoDomain = buscarEventoUseCase.execute(id);
 
+        Map<String, Object> response = new LinkedHashMap<>();
+
         if (eventoDomain == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            response.put("success", false);
+            response.put("message", "Evento não encontrado!");
+            response.put("status", 404);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(response);
         }
 
         EventoDTO eventoDTO = eventoDTOMapper.toDTO(eventoDomain);
 
+        response.put("success", true);
+        response.put("message", "Evento encontrado!");
+        response.put("data", eventoDTO);
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(eventoDTO);
+                .body(response);
 
     }
 
 
     @GetMapping
-    public ResponseEntity<List<EventoDTO>> listar() {
+    public ResponseEntity<Map<String, Object>> listar() {
 
         List<EventoDTO> eventosDTO = listarEventosUseCase.execute()
                 .stream()
                 .map(eventoDTOMapper::toDTO)
                 .toList();
 
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        if (eventosDTO.isEmpty()) {
+            response.put("success", true);
+            response.put("message", "Nenhum evento cadastrado!");
+            response.put("data", eventosDTO);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(response);
+        }
+
+        response.put("success", true);
+        response.put("message", "Eventos encontrados!");
+        response.put("data", eventosDTO);
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(eventosDTO);
+                .body(response);
     }
 
 }
