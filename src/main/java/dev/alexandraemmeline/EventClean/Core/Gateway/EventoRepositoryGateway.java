@@ -12,4 +12,6 @@ public interface EventoRepositoryGateway {
 
      List<EventoDomain> listarEventos();
 
+     void deletarEvento(Long id);
+
 }

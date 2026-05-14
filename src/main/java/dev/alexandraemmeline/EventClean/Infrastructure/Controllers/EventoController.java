@@ -3,22 +3,21 @@ package dev.alexandraemmeline.EventClean.Infrastructure.Controllers;
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
 import dev.alexandraemmeline.EventClean.Core.UseCases.BuscarEventoUseCase;
 import dev.alexandraemmeline.EventClean.Core.UseCases.CriarEventoUseCase;
+import dev.alexandraemmeline.EventClean.Core.UseCases.DeletarEventoUseCase;
 import dev.alexandraemmeline.EventClean.Core.UseCases.ListarEventosUseCase;
 import dev.alexandraemmeline.EventClean.Infrastructure.DTOs.EventoDTO;
 import dev.alexandraemmeline.EventClean.Infrastructure.Mappers.EventoDTOMapper;
-import dev.alexandraemmeline.EventClean.Infrastructure.Persistence.EventoEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("v1/eventos")
+@RequestMapping("/v1/eventos")
 @RequiredArgsConstructor
 public class EventoController {
 
@@ -26,6 +25,7 @@ public class EventoController {
     private final CriarEventoUseCase criarEventoUseCase;
     private final BuscarEventoUseCase buscarEventoUseCase;
     private final ListarEventosUseCase listarEventosUseCase;
+    private final DeletarEventoUseCase deletarEventoUseCase;
 
 
     @PostMapping
@@ -95,6 +95,21 @@ public class EventoController {
         response.put("success", true);
         response.put("message", "Eventos encontrados!");
         response.put("data", eventosDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(response);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> deletar(@PathVariable Long id) {
+
+        deletarEventoUseCase.execute(id);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("success", true);
+        response.put("message", "Evento deletado com sucesso!");
+
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);

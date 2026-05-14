@@ -25,4 +25,9 @@ public class BeanConfiguration {
         return new ListarEventosUseCaseImpl(eventoRepositoryGateway);
     }
 
+    @Bean
+    public DeletarEventoUseCase deletarEventoUseCase(EventoRepositoryGateway eventoRepositoryGateway) {
+        return new DeletarEventoUseCaseImpl(eventoRepositoryGateway);
+    }
+
 }

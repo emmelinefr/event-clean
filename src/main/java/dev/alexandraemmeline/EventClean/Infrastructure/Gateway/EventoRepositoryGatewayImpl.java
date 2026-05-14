@@ -44,7 +44,11 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
                 .stream()
                 .map(eventoEntityMapper::toDomain)
                 .toList();
-
     }
 
+
+    @Override
+    public void deletarEvento(Long id) {
+        eventoRepository.deleteById(id);
+    }
 }
