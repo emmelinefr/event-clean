@@ -51,4 +51,30 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
     public void deletarEvento(Long id) {
         eventoRepository.deleteById(id);
     }
+
+
+    @Override
+    public EventoDomain atualizarEvento(Long id, EventoDomain eventoDomain) {
+
+        EventoEntity eventoExistente = eventoRepository.findById(id)
+                .orElse(null);
+
+        if (eventoExistente == null) {
+            return null;
+        }
+
+        eventoExistente.setNome(eventoDomain.getNome());
+        eventoExistente.setDescricao(eventoDomain.getDescricao());
+        eventoExistente.setIdentificador(eventoDomain.getIdentificador());
+        eventoExistente.setDataInicio(eventoDomain.getDataInicio());
+        eventoExistente.setDataFim(eventoDomain.getDataFim());
+        eventoExistente.setLocalEvento(eventoDomain.getLocalEvento());
+        eventoExistente.setOrganizador(eventoDomain.getOrganizador());
+        eventoExistente.setCapacidade(eventoDomain.getCapacidade());
+        eventoExistente.setTipo(eventoDomain.getTipo());
+
+        EventoEntity eventoAtualizado = eventoRepository.save(eventoExistente);
+
+        return eventoEntityMapper.toDomain(eventoAtualizado);
+    }
 }

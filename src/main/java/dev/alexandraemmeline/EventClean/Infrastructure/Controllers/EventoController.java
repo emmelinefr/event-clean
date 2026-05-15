@@ -1,10 +1,7 @@
 package dev.alexandraemmeline.EventClean.Infrastructure.Controllers;
 
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
-import dev.alexandraemmeline.EventClean.Core.UseCases.BuscarEventoUseCase;
-import dev.alexandraemmeline.EventClean.Core.UseCases.CriarEventoUseCase;
-import dev.alexandraemmeline.EventClean.Core.UseCases.DeletarEventoUseCase;
-import dev.alexandraemmeline.EventClean.Core.UseCases.ListarEventosUseCase;
+import dev.alexandraemmeline.EventClean.Core.UseCases.*;
 import dev.alexandraemmeline.EventClean.Infrastructure.DTOs.EventoDTO;
 import dev.alexandraemmeline.EventClean.Infrastructure.Mappers.EventoDTOMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +23,7 @@ public class EventoController {
     private final BuscarEventoUseCase buscarEventoUseCase;
     private final ListarEventosUseCase listarEventosUseCase;
     private final DeletarEventoUseCase deletarEventoUseCase;
+    private final AtualizarEventoUseCase atualizarEventoUseCase;
 
 
     @PostMapping
@@ -110,6 +108,31 @@ public class EventoController {
         response.put("success", true);
         response.put("message", "Evento deletado com sucesso!");
 
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(response);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> atualizar(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
+
+        EventoDomain eventoAtualizado = atualizarEventoUseCase.execute(id, eventoDTOMapper.toDomain(eventoDTO));
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        if (eventoAtualizado == null) {
+            response.put("success", false);
+            response.put("message", "Evento não encontrado!");
+            response.put("status", 404);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(response);
+        }
+
+        response.put("success", true);
+        response.put("message", "Evento atualizado com sucesso!");
+        response.put("data", eventoDTOMapper.toDTO(eventoAtualizado));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);

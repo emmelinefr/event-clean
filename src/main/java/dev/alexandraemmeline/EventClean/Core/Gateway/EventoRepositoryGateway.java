@@ -14,4 +14,6 @@ public interface EventoRepositoryGateway {
 
      void deletarEvento(Long id);
 
+     EventoDomain atualizarEvento(Long id, EventoDomain eventoDomain);
+
 }
