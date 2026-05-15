@@ -35,4 +35,9 @@ public class BeanConfiguration {
         return new AtualizarEventoUseCaseImpl(eventoRepositoryGateway);
     }
 
+    @Bean
+    public AtualizarEventoParcialmenteUseCase atualizarEventoParcialmenteUseCase(EventoRepositoryGateway eventoRepositoryGateway) {
+        return new AtualizarEventoParcialmenteUseCaseImpl(eventoRepositoryGateway);
+    }
+
 }

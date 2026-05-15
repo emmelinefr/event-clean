@@ -77,4 +77,61 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
 
         return eventoEntityMapper.toDomain(eventoAtualizado);
     }
+
+
+    @Override
+    public EventoDomain atualizarParcialmenteEvento(Long id, EventoDomain eventoDomain) {
+
+        EventoEntity eventoExistente = eventoRepository.findById(id)
+                .orElse(null);
+
+
+        if (eventoExistente == null) {
+            return null;
+        }
+
+
+        if (eventoDomain.getNome() != null) {
+            eventoExistente.setNome(eventoDomain.getNome());
+        }
+
+        if (eventoDomain.getDescricao() != null) {
+            eventoExistente.setDescricao(eventoDomain.getDescricao());
+        }
+
+        if (eventoDomain.getIdentificador() != null) {
+            eventoExistente.setIdentificador(eventoDomain.getIdentificador());
+        }
+
+        if (eventoDomain.getDataInicio() != null) {
+            eventoExistente.setDataInicio(eventoDomain.getDataInicio());
+        }
+
+        if (eventoDomain.getDataFim() != null) {
+            eventoExistente.setDataFim(eventoDomain.getDataFim());
+        }
+
+        if (eventoDomain.getLocalEvento() != null) {
+            eventoExistente.setLocalEvento(eventoDomain.getLocalEvento());
+        }
+
+        if (eventoDomain.getOrganizador() != null) {
+            eventoExistente.setOrganizador(eventoDomain.getOrganizador());
+        }
+
+        if (eventoDomain.getCapacidade() != null) {
+            eventoExistente.setCapacidade(eventoDomain.getCapacidade());
+        }
+
+        if (eventoDomain.getTipo() != null) {
+            eventoExistente.setTipo(eventoDomain.getTipo());
+        }
+
+        EventoEntity eventoAtualizado = eventoRepository.save(eventoExistente);
+
+
+        return eventoEntityMapper.toDomain(eventoAtualizado);
+
+    }
+
 }

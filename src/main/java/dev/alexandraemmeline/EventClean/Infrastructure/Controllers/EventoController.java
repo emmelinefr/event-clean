@@ -24,6 +24,7 @@ public class EventoController {
     private final ListarEventosUseCase listarEventosUseCase;
     private final DeletarEventoUseCase deletarEventoUseCase;
     private final AtualizarEventoUseCase atualizarEventoUseCase;
+    private final AtualizarEventoParcialmenteUseCase atualizarEventoParcialmenteUseCase;
 
 
     @PostMapping
@@ -137,5 +138,33 @@ public class EventoController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);
     }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> atualizarParcialmente(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
+
+        EventoDomain eventoAtualizado = atualizarEventoParcialmenteUseCase.execute(id, eventoDTOMapper.toDomain(eventoDTO));
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        if (eventoAtualizado == null) {
+            response.put("success", false);
+            response.put("message", "Evento não encontrado!");
+            response.put("status", 404);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(response);
+        }
+
+        response.put("success", true);
+        response.put("message", "Evento atualizado com sucesso!");
+        response.put("data", eventoDTOMapper.toDTO(eventoAtualizado));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(response);
+
+
+    }
+
 
 }

@@ -16,4 +16,5 @@ public interface EventoRepositoryGateway {
 
      EventoDomain atualizarEvento(Long id, EventoDomain eventoDomain);
 
+     EventoDomain atualizarParcialmenteEvento(Long id, EventoDomain eventoDomain);
 }
