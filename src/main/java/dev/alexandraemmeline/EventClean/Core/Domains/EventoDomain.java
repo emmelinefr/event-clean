@@ -1,6 +1,7 @@
 package dev.alexandraemmeline.EventClean.Core.Domains;
 
 import dev.alexandraemmeline.EventClean.Core.Enums.TipoEvento;
+import dev.alexandraemmeline.EventClean.Core.Exceptions.PeriodoEventoInvalidoException;
 
 import java.time.LocalDateTime;
 
@@ -19,10 +20,8 @@ public class EventoDomain {
 
 
     public EventoDomain(Long id, String nome, String descricao, String identificador, LocalDateTime dataInicio, LocalDateTime dataFim, String localEvento, String organizador, Integer capacidade, TipoEvento tipo) {
-        //TODO tratar com exception
-        if (dataInicio == null || dataFim == null || dataFim.isBefore(dataInicio)) {
-            System.out.println("Período Inválido");
-        }
+
+        validarDatas(dataInicio, dataFim);
 
         this.id = id;
         this.nome = nome;
@@ -77,25 +76,31 @@ public class EventoDomain {
         return tipo;
     }
 
-    //TODO tratar com exception
-    public void setDataInicio(LocalDateTime dataInicio) {
-        if (dataInicio.isAfter(dataFim)) {
-            System.out.println("Período Inválido");
-
-        }
-        this.dataInicio = dataInicio;
-    }
-
-    //TODO tratar com exception
-    public void setDataFim(LocalDateTime dataFim) {
-        if (dataFim.isBefore(dataInicio)) {
-            System.out.println("Período Inválido");
-        }
-        this.dataFim = dataFim;
-    }
 
     public void setLocalEvento(String localEvento) {
         this.localEvento = localEvento;
+    }
+
+
+    public void alterarDatas(LocalDateTime dataInicio, LocalDateTime dataFim) {
+
+        validarDatas(dataInicio, dataFim);
+
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
+    }
+
+
+    private void validarDatas(LocalDateTime dataInicio, LocalDateTime dataFim) {
+
+        if (dataInicio == null || dataFim == null) {
+            throw new PeriodoEventoInvalidoException("As datas do evento são obrigatórias");
+        }
+
+        if (dataFim.isBefore(dataInicio)) {
+            throw new PeriodoEventoInvalidoException("A data fim não pode ser antes da data início");
+        }
+
     }
 
 }
