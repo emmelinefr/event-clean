@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -29,11 +30,10 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
 
 
     @Override
-    public EventoDomain buscarEvento(Long id) {
+    public Optional<EventoDomain> buscarEvento(Long id) {
 
         return eventoRepository.findById(id)
-                .map(eventoEntityMapper::toDomain)
-                .orElse(null);
+                .map(eventoEntityMapper::toDomain);
     }
 
 

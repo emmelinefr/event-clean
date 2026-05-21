@@ -1,6 +1,7 @@
 package dev.alexandraemmeline.EventClean.Core.UseCases;
 
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
+import dev.alexandraemmeline.EventClean.Core.Exceptions.EventoNaoEncontradoException;
 import dev.alexandraemmeline.EventClean.Core.Gateway.EventoRepositoryGateway;
 
 public class BuscarEventoUseCaseImpl implements BuscarEventoUseCase{
@@ -14,7 +15,8 @@ public class BuscarEventoUseCaseImpl implements BuscarEventoUseCase{
 
     @Override
     public EventoDomain execute(Long id) {
-        return eventoRepositoryGateway.buscarEvento(id);
+        return eventoRepositoryGateway.buscarEvento(id)
+                .orElseThrow(() -> new EventoNaoEncontradoException(id));
     }
 
 }
