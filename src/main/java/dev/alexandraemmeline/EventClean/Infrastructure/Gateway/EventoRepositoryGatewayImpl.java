@@ -1,6 +1,7 @@
 package dev.alexandraemmeline.EventClean.Infrastructure.Gateway;
 
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
+import dev.alexandraemmeline.EventClean.Core.Exceptions.EventoNaoEncontradoException;
 import dev.alexandraemmeline.EventClean.Core.Gateway.EventoRepositoryGateway;
 import dev.alexandraemmeline.EventClean.Infrastructure.Mappers.EventoEntityMapper;
 import dev.alexandraemmeline.EventClean.Infrastructure.Persistence.EventoEntity;
@@ -57,11 +58,8 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
     public EventoDomain atualizarEvento(Long id, EventoDomain eventoDomain) {
 
         EventoEntity eventoExistente = eventoRepository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new EventoNaoEncontradoException(id));
 
-        if (eventoExistente == null) {
-            return null;
-        }
 
         eventoExistente.setNome(eventoDomain.getNome());
         eventoExistente.setDescricao(eventoDomain.getDescricao());
@@ -83,12 +81,7 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
     public EventoDomain atualizarParcialmenteEvento(Long id, EventoDomain eventoDomain) {
 
         EventoEntity eventoExistente = eventoRepository.findById(id)
-                .orElse(null);
-
-
-        if (eventoExistente == null) {
-            return null;
-        }
+                .orElseThrow(() -> new EventoNaoEncontradoException(id));
 
 
         if (eventoDomain.getNome() != null) {

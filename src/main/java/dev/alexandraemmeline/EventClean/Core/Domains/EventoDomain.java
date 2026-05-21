@@ -93,12 +93,11 @@ public class EventoDomain {
 
     private void validarDatas(LocalDateTime dataInicio, LocalDateTime dataFim) {
 
-        if (dataInicio == null || dataFim == null) {
-            throw new PeriodoEventoInvalidoException("As datas do evento são obrigatórias");
-        }
+        if (dataInicio != null && dataFim != null) {
 
-        if (dataFim.isBefore(dataInicio)) {
-            throw new PeriodoEventoInvalidoException("A data fim não pode ser antes da data início");
+            if (dataFim.isBefore((dataInicio))) {
+                throw new PeriodoEventoInvalidoException("A data fim não pode ser antes da data início");
+            }
         }
 
     }
