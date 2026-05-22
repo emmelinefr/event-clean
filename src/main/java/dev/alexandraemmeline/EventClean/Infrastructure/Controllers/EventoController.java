@@ -49,18 +49,9 @@ public class EventoController {
 
         EventoDomain eventoDomain = buscarEventoUseCase.execute(id);
 
-        Map<String, Object> response = new LinkedHashMap<>();
-
-        if (eventoDomain == null) {
-            response.put("success", false);
-            response.put("message", "Evento não encontrado!");
-            response.put("status", 404);
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(response);
-        }
-
         EventoDTO eventoDTO = eventoDTOMapper.toDTO(eventoDomain);
+
+        Map<String, Object> response = new LinkedHashMap<>();
 
         response.put("success", true);
         response.put("message", "Evento encontrado!");
