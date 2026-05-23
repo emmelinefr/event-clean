@@ -1,7 +1,7 @@
 package dev.alexandraemmeline.EventClean.Core.UseCases;
 
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
-import dev.alexandraemmeline.EventClean.Core.Exceptions.EventoNaoEncontradoException;
+import dev.alexandraemmeline.EventClean.Infrastructure.Exceptions.EventoNaoEncontradoException;
 import dev.alexandraemmeline.EventClean.Core.Gateway.EventoRepositoryGateway;
 
 public class BuscarEventoUseCaseImpl implements BuscarEventoUseCase{
@@ -15,8 +15,15 @@ public class BuscarEventoUseCaseImpl implements BuscarEventoUseCase{
 
     @Override
     public EventoDomain execute(Long id) {
-        return eventoRepositoryGateway.buscarEvento(id)
-                .orElseThrow(() -> new EventoNaoEncontradoException(id));
+
+        EventoDomain evento = eventoRepositoryGateway.buscarEvento(id);
+
+        if (evento == null) {
+            throw new EventoNaoEncontradoException(
+                    "O evento de ID " + id + " não foi encontrado. Tente novamente");
+        }
+
+        return evento;
     }
 
 }

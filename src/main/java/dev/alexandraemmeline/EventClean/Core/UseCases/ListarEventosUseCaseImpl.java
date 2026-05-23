@@ -16,6 +16,7 @@ public class ListarEventosUseCaseImpl implements ListarEventosUseCase{
 
     @Override
     public List<EventoDomain> execute() {
+
         return eventoRepositoryGateway.listarEventos();
     }
 

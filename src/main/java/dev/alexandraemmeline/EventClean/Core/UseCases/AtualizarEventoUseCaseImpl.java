@@ -1,10 +1,10 @@
 package dev.alexandraemmeline.EventClean.Core.UseCases;
 
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
-import dev.alexandraemmeline.EventClean.Core.Exceptions.EventoNaoEncontradoException;
+import dev.alexandraemmeline.EventClean.Infrastructure.Exceptions.EventoNaoEncontradoException;
 import dev.alexandraemmeline.EventClean.Core.Gateway.EventoRepositoryGateway;
 
-public class AtualizarEventoUseCaseImpl implements AtualizarEventoUseCase{
+public class AtualizarEventoUseCaseImpl implements AtualizarEventoUseCase {
 
     private final EventoRepositoryGateway eventoRepositoryGateway;
 
@@ -13,12 +13,17 @@ public class AtualizarEventoUseCaseImpl implements AtualizarEventoUseCase{
     }
 
 
+
     @Override
     public EventoDomain execute(Long id, EventoDomain eventoDomain) {
 
-        eventoRepositoryGateway.buscarEvento(id)
-                .orElseThrow(() -> new EventoNaoEncontradoException(id));
+        EventoDomain evento = eventoRepositoryGateway.buscarEvento(id);
+
+        if (evento == null) {
+            throw new EventoNaoEncontradoException("Evento de ID " + id + " não encontrado");
+        }
 
         return eventoRepositoryGateway.atualizarEvento(id, eventoDomain);
     }
+
 }

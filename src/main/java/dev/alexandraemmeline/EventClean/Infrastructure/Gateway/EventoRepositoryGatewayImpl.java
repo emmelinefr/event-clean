@@ -1,7 +1,6 @@
 package dev.alexandraemmeline.EventClean.Infrastructure.Gateway;
 
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
-import dev.alexandraemmeline.EventClean.Core.Exceptions.EventoNaoEncontradoException;
 import dev.alexandraemmeline.EventClean.Core.Gateway.EventoRepositoryGateway;
 import dev.alexandraemmeline.EventClean.Infrastructure.Mappers.EventoEntityMapper;
 import dev.alexandraemmeline.EventClean.Infrastructure.Persistence.EventoEntity;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -31,10 +29,12 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
 
 
     @Override
-    public Optional<EventoDomain> buscarEvento(Long id) {
+    public EventoDomain buscarEvento(Long id) {
 
         return eventoRepository.findById(id)
-                .map(eventoEntityMapper::toDomain);
+                .map(eventoEntityMapper::toDomain)
+                .orElse(null);
+
     }
 
 
@@ -58,8 +58,7 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
     public EventoDomain atualizarEvento(Long id, EventoDomain eventoDomain) {
 
         EventoEntity eventoExistente = eventoRepository.findById(id)
-                .orElseThrow(() -> new EventoNaoEncontradoException(id));
-
+                .orElse(null);
 
         eventoExistente.setNome(eventoDomain.getNome());
         eventoExistente.setDescricao(eventoDomain.getDescricao());
@@ -81,8 +80,11 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
     public EventoDomain atualizarParcialmenteEvento(Long id, EventoDomain eventoDomain) {
 
         EventoEntity eventoExistente = eventoRepository.findById(id)
-                .orElseThrow(() -> new EventoNaoEncontradoException(id));
+                .orElse(null);
 
+        if (eventoExistente == null) {
+            return null;
+        }
 
         if (eventoDomain.getNome() != null) {
             eventoExistente.setNome(eventoDomain.getNome());
@@ -122,9 +124,13 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
 
         EventoEntity eventoAtualizado = eventoRepository.save(eventoExistente);
 
-
         return eventoEntityMapper.toDomain(eventoAtualizado);
-
     }
 
+
+    @Override
+    public boolean existePorIdentificador(String identificador) {
+        return eventoRepository.findAll().stream()
+                .anyMatch(eventoEntity -> eventoEntity.getIdentificador().equalsIgnoreCase(identificador));
+    }
 }

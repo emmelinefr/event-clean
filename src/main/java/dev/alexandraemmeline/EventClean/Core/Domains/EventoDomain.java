@@ -1,7 +1,6 @@
 package dev.alexandraemmeline.EventClean.Core.Domains;
 
 import dev.alexandraemmeline.EventClean.Core.Enums.TipoEvento;
-import dev.alexandraemmeline.EventClean.Core.Exceptions.PeriodoEventoInvalidoException;
 
 import java.time.LocalDateTime;
 
@@ -20,8 +19,6 @@ public class EventoDomain {
 
 
     public EventoDomain(Long id, String nome, String descricao, String identificador, LocalDateTime dataInicio, LocalDateTime dataFim, String localEvento, String organizador, Integer capacidade, TipoEvento tipo) {
-
-        validarDatas(dataInicio, dataFim);
 
         this.id = id;
         this.nome = nome;
@@ -84,22 +81,8 @@ public class EventoDomain {
 
     public void alterarDatas(LocalDateTime dataInicio, LocalDateTime dataFim) {
 
-        validarDatas(dataInicio, dataFim);
-
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-    }
-
-
-    private void validarDatas(LocalDateTime dataInicio, LocalDateTime dataFim) {
-
-        if (dataInicio != null && dataFim != null) {
-
-            if (dataFim.isBefore((dataInicio))) {
-                throw new PeriodoEventoInvalidoException("A data fim não pode ser antes da data início");
-            }
-        }
-
     }
 
 }
