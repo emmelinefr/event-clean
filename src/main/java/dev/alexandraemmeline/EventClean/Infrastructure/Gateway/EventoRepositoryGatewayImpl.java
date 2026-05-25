@@ -130,7 +130,6 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
 
     @Override
     public boolean existePorIdentificador(String identificador) {
-        return eventoRepository.findAll().stream()
-                .anyMatch(eventoEntity -> eventoEntity.getIdentificador().equalsIgnoreCase(identificador));
+        return eventoRepository.existePorIdentificador(identificador);
     }
 }
