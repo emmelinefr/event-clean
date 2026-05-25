@@ -25,6 +25,7 @@ public class EventoController {
     private final DeletarEventoUseCase deletarEventoUseCase;
     private final AtualizarEventoUseCase atualizarEventoUseCase;
     private final AtualizarEventoParcialmenteUseCase atualizarEventoParcialmenteUseCase;
+    private final BuscarEventoPorIdentificadorUseCase buscarEventoPorIdentificadorUseCase;
 
 
     @PostMapping
@@ -139,6 +140,25 @@ public class EventoController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);
 
+    }
+
+
+    @GetMapping("/identificador/{identificador}")
+    public ResponseEntity<SuccessResponse<EventoDTO>> buscarPorIdentificador(@PathVariable String identificador) {
+
+        EventoDomain evento = buscarEventoPorIdentificadorUseCase.execute(identificador);
+
+        EventoDTO eventoDTO = eventoDTOMapper.toDTO(evento);
+
+        SuccessResponse<EventoDTO> response = new SuccessResponse<>(
+                true,
+                "Evento encontrado!",
+                eventoDTO,
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(response);
     }
 
 

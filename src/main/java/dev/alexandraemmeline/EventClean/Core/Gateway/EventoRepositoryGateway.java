@@ -18,6 +18,7 @@ public interface EventoRepositoryGateway {
 
      EventoDomain atualizarParcialmenteEvento(Long id, EventoDomain eventoDomain);
 
+     EventoDomain buscarPorIdentificador(String identificador);
 
 
      boolean existePorIdentificador(String identificador);

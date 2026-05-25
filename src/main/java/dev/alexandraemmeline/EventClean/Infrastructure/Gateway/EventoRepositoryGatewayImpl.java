@@ -129,6 +129,14 @@ public class EventoRepositoryGatewayImpl implements EventoRepositoryGateway {
 
 
     @Override
+    public EventoDomain buscarPorIdentificador(String identificador) {
+
+        return eventoRepository.findByIdentificadorIgnoreCase(identificador)
+                .map(eventoEntityMapper::toDomain)
+                .orElse(null);
+    }
+
+    @Override
     public boolean existePorIdentificador(String identificador) {
         return eventoRepository.existePorIdentificador(identificador);
     }

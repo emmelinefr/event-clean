@@ -40,4 +40,9 @@ public class BeanConfiguration {
         return new AtualizarEventoParcialmenteUseCaseImpl(eventoRepositoryGateway);
     }
 
+    @Bean
+    public BuscarEventoPorIdentificadorUseCase buscarEventoPorIdentificadorUseCase(EventoRepositoryGateway eventoRepositoryGateway) {
+        return new BuscarEventoPorIdentificadorUseCaseImpl(eventoRepositoryGateway);
+    }
+
 }
