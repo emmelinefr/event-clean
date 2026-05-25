@@ -1,24 +1,22 @@
 package dev.alexandraemmeline.EventClean.Infrastructure.Handler;
 
-import dev.alexandraemmeline.EventClean.Infrastructure.Exceptions.DuplicateEventException;
-import dev.alexandraemmeline.EventClean.Infrastructure.Exceptions.EventoNaoEncontradoException;
+import dev.alexandraemmeline.EventClean.Core.Exceptions.DuplicateEventException;
+import dev.alexandraemmeline.EventClean.Core.Exceptions.EventNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(EventoNaoEncontradoException.class)
-    public ResponseEntity<ErrorResponse> handleEventoNaoEcontrado (EventoNaoEncontradoException ex) {
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEventoNaoEcontrado (EventNotFoundException ex) {
 
         ErrorResponse response = new ErrorResponse(
                 false,

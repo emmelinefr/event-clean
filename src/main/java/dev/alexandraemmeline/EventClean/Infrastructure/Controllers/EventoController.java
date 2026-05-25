@@ -3,7 +3,7 @@ package dev.alexandraemmeline.EventClean.Infrastructure.Controllers;
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
 import dev.alexandraemmeline.EventClean.Core.UseCases.*;
 import dev.alexandraemmeline.EventClean.Infrastructure.DTOs.EventoDTO;
-import dev.alexandraemmeline.EventClean.Infrastructure.Handler.SucessResponse;
+import dev.alexandraemmeline.EventClean.Infrastructure.Handler.SuccessResponse;
 import dev.alexandraemmeline.EventClean.Infrastructure.Mappers.EventoDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,9 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/eventos")
@@ -30,13 +28,13 @@ public class EventoController {
 
 
     @PostMapping
-    public ResponseEntity<SucessResponse<EventoDTO>> criar(@RequestBody EventoDTO eventoDTO) {
+    public ResponseEntity<SuccessResponse<EventoDTO>> criar(@RequestBody EventoDTO eventoDTO) {
 
         EventoDomain novoEventoDomain = criarEventoUseCase.execute(eventoDTOMapper.toDomain(eventoDTO));
 
         EventoDTO novoEventoDTO = eventoDTOMapper.toDTO(novoEventoDomain);
 
-        SucessResponse<EventoDTO> response= new SucessResponse<>(
+        SuccessResponse<EventoDTO> response= new SuccessResponse<>(
                 true,
                 "Evento criado com sucesso",
                 novoEventoDTO,
@@ -49,13 +47,13 @@ public class EventoController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<SucessResponse<EventoDTO>> buscar(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<EventoDTO>> buscar(@PathVariable Long id) {
 
         EventoDomain eventoDomain = buscarEventoUseCase.execute(id);
 
         EventoDTO eventoDTO = eventoDTOMapper.toDTO(eventoDomain);
 
-        SucessResponse<EventoDTO> response = new SucessResponse<>(
+        SuccessResponse<EventoDTO> response = new SuccessResponse<>(
                 true,
                 "Evento encontrado!",
                 eventoDTO,
@@ -69,14 +67,14 @@ public class EventoController {
 
 
     @GetMapping
-    public ResponseEntity<SucessResponse<List<EventoDTO>>> listar() {
+    public ResponseEntity<SuccessResponse<List<EventoDTO>>> listar() {
 
         List<EventoDTO> eventosDTO = listarEventosUseCase.execute()
                 .stream()
                 .map(eventoDTOMapper::toDTO)
                 .toList();
 
-        SucessResponse<List<EventoDTO>> response = new SucessResponse<>(
+        SuccessResponse<List<EventoDTO>> response = new SuccessResponse<>(
                 true,
                 "Consulta realizada com sucesso",
                 eventosDTO,
@@ -90,11 +88,11 @@ public class EventoController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SucessResponse<Void>> deletar(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<Void>> deletar(@PathVariable Long id) {
 
         deletarEventoUseCase.execute(id);
 
-        SucessResponse<Void> response = new SucessResponse<>(
+        SuccessResponse<Void> response = new SuccessResponse<>(
                 true,
                 "Evento deletado com sucesso",
                 null,
@@ -108,13 +106,13 @@ public class EventoController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<SucessResponse<EventoDTO>> atualizar(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
+    public ResponseEntity<SuccessResponse<EventoDTO>> atualizar(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
 
         EventoDomain eventoAtualizado = atualizarEventoUseCase.execute(id, eventoDTOMapper.toDomain(eventoDTO));
 
         EventoDTO eventoAtualizadoDTO = eventoDTOMapper.toDTO(eventoAtualizado);
 
-        SucessResponse<EventoDTO> response = new SucessResponse<>(
+        SuccessResponse<EventoDTO> response = new SuccessResponse<>(
                 true,
                 "Evento atualizado com sucesso!",
                 eventoAtualizadoDTO,
@@ -127,11 +125,11 @@ public class EventoController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<SucessResponse<EventoDTO>> atualizarParcialmente(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
+    public ResponseEntity<SuccessResponse<EventoDTO>> atualizarParcialmente(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
 
         EventoDomain eventoAtualizado = atualizarEventoParcialmenteUseCase.execute(id, eventoDTOMapper.toDomain(eventoDTO));
 
-        SucessResponse<EventoDTO> response = new SucessResponse<>(
+        SuccessResponse<EventoDTO> response = new SuccessResponse<>(
                 true,
                 "Evento atualizado com sucesso!",
                 eventoDTO,

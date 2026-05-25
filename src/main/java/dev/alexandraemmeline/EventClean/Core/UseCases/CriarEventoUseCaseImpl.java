@@ -2,7 +2,7 @@ package dev.alexandraemmeline.EventClean.Core.UseCases;
 
 import dev.alexandraemmeline.EventClean.Core.Domains.EventoDomain;
 import dev.alexandraemmeline.EventClean.Core.Gateway.EventoRepositoryGateway;
-import dev.alexandraemmeline.EventClean.Infrastructure.Exceptions.DuplicateEventException;
+import dev.alexandraemmeline.EventClean.Core.Exceptions.DuplicateEventException;
 
 public class CriarEventoUseCaseImpl implements CriarEventoUseCase{
 

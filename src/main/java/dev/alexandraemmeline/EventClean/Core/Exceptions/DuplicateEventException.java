@@ -1,4 +1,4 @@
-package dev.alexandraemmeline.EventClean.Infrastructure.Exceptions;
+package dev.alexandraemmeline.EventClean.Core.Exceptions;
 
 public class DuplicateEventException extends RuntimeException {
 
